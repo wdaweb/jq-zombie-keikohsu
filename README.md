@@ -6,5 +6,5 @@
 若使用 GitHub 網頁進行 commit 會依次數扣分
 
 
-[開始玩]( https://keikohsu.github.io/jq-zombie-keikohsu/淨灘遊戲/)
+[開始玩]( https://keikohsu.github.io/jq-zombie-keikohsu/淨灘遊戲/game)
 
