@@ -1,0 +1,670 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>淨灘遊戲</title>
+
+  <script src="./ndgmr.Collision.js"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Carter+One&display=swap" rel="stylesheet" />
+  <style>
+    * {
+      padding: 0;
+      margin: 0;
+    }
+
+    body {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      height: 100vh;
+      background: rgb(255, 177, 9);
+      /* background-image: url(./images/giphy.gif); */
+      background-repeat: no-repeat;
+      overflow: hidden;
+    }
+
+    #gamebackground {
+      position: relative;
+      width: 900px;
+      height: 650px;
+      background-size: 100%;
+      background-repeat: no-repeat;
+      /* background: green; */
+      background-image: url(./images/泳池加大-1.jpg);
+      overflow: hidden;
+
+    }
+
+    /* 鼠標 */
+    #game {
+      cursor: url(./images/夾子.png) 50 50, auto;
+      top: 5%;
+    }
+
+    /* 控制章魚大小 */
+    #game img {
+      position: absolute;
+
+      /* background-color:blue ; */
+    }
+
+    /* 開始遊戲 start 區塊 */
+    #grade {
+      position: relative;
+      width: 140px;
+      height: 130px;
+
+      top: 240px;
+      right: 1170px;
+    }
+
+    #btn-start {
+      background-image: url(./images/start.png);
+      background-repeat: no-repeat;
+      width: 160px;
+      height: 50px;
+      border-radius: 10px;
+      position: absolute;
+      transform: rotate(-12deg);
+      background-color: rgb(238, 215, 87);
+
+    }
+
+    /* #role {
+        position: absolute;
+        width: 480px;
+        height: 480px;
+        left: 0;
+        top: 0;
+        background-image: url(./images/人游泳-2.gif);
+        background-color : red; 
+       } */
+
+    /* 扣血血條 */
+    /* #lineBlack {
+        width: 400px;
+        height: 20px;
+        border: 4px solid black;
+        position: absolute;
+        left: 50%;
+        top: 20px;
+        margin: 0 0 0 -204px;
+      }
+      #lineblood {
+        width: 400px;
+        height: 100%;
+        transition: 0.3s;
+        background-color: red;
+      }
+       */
+    /* 遊戲說明 */
+    #explainBG {
+      position: fixed;
+      left: 0;
+      top: 0;
+      height: 100%;
+      width: 100%;
+      background: rgba(117, 106, 7, 0.5);
+    }
+
+    /* 愛地球 */
+    #slide {
+      position: absolute;
+
+      height: 600px;
+      width: 1000px;
+      right: 200px;
+      top: 90px;
+      background: url(./images/環保愛地球.jpg);
+      background-size: 100%;
+      background-repeat: no-repeat;
+    }
+
+    #slideBG {
+      position: fixed;
+      left: 0;
+      top: 0;
+      height: 100%;
+      width: 100%;
+      background: rgb(141, 209, 248);
+    }
+
+    #explain {
+      margin: 125px auto;
+      text-align: center;
+      height: 500px;
+      width: 700px;
+      background-image: url(./images/遊戲說明欄.png);
+      border-radius: 3px;
+      /* box-shadow: 2px 2px rgba(0, 0, 0, 0.3); */
+    }
+
+    #btn-explain {
+      background-image: url(./images/問號.png);
+      position: absolute;
+      height: 100px;
+      width: 100px;
+      background-repeat: no-repeat;
+      left: 10px;
+      top: 10px;
+    }
+
+    #btn-explain:hover {
+      background-image: url(./images/問號-紅.png);
+    }
+
+    #circle {
+      background-image: url(./images/游泳圈.png);
+      position: absolute;
+      height: 250px;
+      width: 250px;
+      background-repeat: no-repeat;
+      /* background: olive; */
+      background-size: 100%;
+      top: -50px;
+      right: 150px;
+      animation: Updown 5s infinite alternate;
+    }
+
+    #circle2 {
+      background-image: url(./images/游泳圈.png);
+      position: absolute;
+      height: 250px;
+      width: 250px;
+      background-repeat: no-repeat;
+      /* background: olive; */
+      background-size: 100%;
+      top: -80px;
+      left: 130px;
+      animation: down 5s infinite alternate;
+    }
+    #tree{
+      background-image: url(./images/椰子樹1.png);
+      height: 250px;
+      width: 250px;
+      position: absolute;
+      top: 60%;
+      left: 75%;
+    }
+
+    @keyframes Updown {
+      from {
+        margin-right: 30px;
+      }
+
+      to {
+        margin-right: 10px;
+      }
+    }
+
+    @keyframes down {
+      0% {
+        margin-left: 30px;
+        margin-top: 10px;
+
+
+      }
+
+      50% {
+        margin-left: 10px;
+        transform: rotate(0.5);
+      }
+    }
+
+    /* 字的樣式 */
+    .textstyle {
+      font-family: "Carter One", cursive;
+      letter-spacing: 5px;
+      color: rgb(56, 15, 15);
+      font-size: 30px;
+      border-radius: 10px 0 0;
+      position: absolute;
+      top: 100px;
+      right: 115px;
+      transform: rotate(-10deg);
+    }
+
+    #grades {
+      position: relative;
+      width: 350px;
+      height: 350px;
+      background-size: 95%;
+      background-image: url(./images/記分板.png);
+      /* background: olive;  */
+      background-repeat: no-repeat;
+      top: 150px;
+
+    }
+
+    #audio_btn {
+      position: absolute;
+      top: 120px;
+      left: 10px;
+    }
+
+    /* 按鈕 */
+    #next {
+      position: absolute;
+      top: 500px;
+    }
+
+    #ok {
+      position: absolute;
+      top: 550px;
+      left: 700px;
+    }
+  </style>
+</head>
+
+<body>
+
+  </div>
+
+  <!-- 音樂 -->
+  <audio id="music_A" src="海浪聲.mp3" autoplay="autoplay" loop="loop">你的瀏覽器不支援audio標籤。</audio>
+  <a id="audio_btn"><img src="./images/音符.png" width="100" height="100" id="music_A"></a>
+  <!-- <audio id="music_A" src="海浪聲.mp3" loop="1" autoplay controls></audio>
+  <a href="javascript:playPause();"><img src="./images/play.png" width="48" height="50" id="music_B"></a> -->
+  <div id="grades">
+    <div class="textstyle">
+
+      <p>SCORE: <span id="text-score" style="color: red">0</span></p>
+      <p>TIME:<span id="text-time" style="color: red"> 30</span></p>
+    </div>
+  </div>
+  <!-- 遊戲畫面 -->
+
+  <div id="gamebackground">
+    <div id="game"></div>
+    <div id="circle"></div>
+    <div id="circle2"></div>
+    <div id="role"></div>
+    <div id="tree"></div>
+  </div>
+
+  <!-- 計分表 -->
+
+  <div id="grade">
+    <div input type="button" value="開始遊戲" id="btn-start"></div>
+  </div>
+
+  <!-- ?遊戲說明鍵? -->
+  <div input type="button" value="說明遊戲" id="btn-explain"></div>
+  <div id="explainBG">
+
+    <div id="explain">
+      <button id="ok">OK!</button>
+      <div id="slide">
+        <button id="next">下一步</button>
+      </div>
+
+    </div>
+
+
+  </div>
+
+
+
+
+  <!--------------------------------JS--------------------------->
+  <script src="./jquery-3.5.1.min.js"></script>
+  <script>
+    // 捲動頁面{
+
+
+    // 音樂
+    $("#audio_btn").click(function () {
+      let music = document.getElementById("music_A");
+      if (music.paused) {
+        music.play(); $("#music_B").attr("src", "./images/音符.png");
+        $("#music_B").fadeOut(200);
+      }
+      else {
+        music.pause(); $("#music_B").attr("src", "./images/音符-紅.png");
+        $("#music_B").fadeOut(200);
+      }
+    });
+
+
+
+
+
+    // 說明欄
+    $(function () {
+
+      $("#next").click(function () {
+        $("#slide").fadeOut(300)
+
+      });
+      $("#btn-explain").click(function () {
+
+        $("#explainBG").fadeIn(300);
+      });
+
+      $("#ok").click(function () {
+        $("#explainBG").fadeOut(300);
+      });
+    });
+
+    let score = 0;
+    let timeleft = 30;
+
+    // 殭屍流水號
+    let id = 0;
+
+    const rand = (num) => {
+      return Math.floor(Math.random() * num);
+    };
+    // 章魚速度
+    const movezombie = (id) => {
+      $(`#a1${id}`).animate(
+        {
+          left: rand(70) + "%",
+          top: rand(70) + "%",
+        },
+        // 移動速度
+        3000,
+        function () {
+          movezombie(id);
+        }
+      );
+    };
+    // 垃圾速度
+    const movezombie2 = (id) => {
+      $(`#a2${id}`).animate(
+        {
+          left: rand(70) + "%",
+          top: rand(90) + "%",
+        },
+        7000,
+        function () {
+          movezombie2(id);
+        }
+      );
+    };
+    // 烏龜
+    const moveTurtle = (id) => {
+      $(`#a3${id}`).animate(
+        {
+          // left: rand(70) + "%",
+          right: rand(70) + "%",
+        },
+        1000,
+        function () {
+          moveTurtle(id);
+        }
+      );
+    };
+
+    // 加秒數
+    const circle = (timeleft) => {
+      $(` ${timeleft}`).animate({
+        left: rand(70) + "%",
+        top: rand(70) + "%",
+        // right:rand(70) + "%",
+      });
+    };
+
+    $("#btn-start").click(function () {
+      // 停用開始按鈕
+      $(this).attr("disabled", true);
+
+      // 重設
+      score = 0;
+      $("#text-score").text(score);
+      timeleft = 30;
+      $("#text-time").text(timeleft);
+
+      let timer = setInterval(function () {
+        // 修改秒數
+        timeleft--;
+        $("#text-time").text(timeleft);
+
+        if (timeleft === 0) {
+          clearInterval(timer);
+          $("#btn-start").attr("disabled", false);
+          $("#game img").remove();
+          // $("src","./imges/blood.png").remove()
+          setTimeout(() => {
+            alert("時間到");
+          }, 100);
+        } else {
+          // 章魚
+          if (rand(10) > 5.5) {
+            $("#game").append(`<img src="./images/章魚-慢版-1.gif" id="a1${id}">`);
+            $(`#a1${id}`).css({
+              left: rand(70) + "%",
+              top: rand(50) + "%",
+            });
+
+            movezombie(id);
+            id++;
+          }
+        }
+        // 烏龜
+        if (rand(10) > 7) {
+          $("#game").append(`<img src="./images/烏龜-1.gif" id="a3${id}">`);
+          $(`#a3${id}`).css({
+            left: rand(60) + "%",
+            top: 90 + "%",
+
+          });
+
+          moveTurtle(id);
+          id++;
+        }
+
+        {
+          // 塑膠袋
+          if (rand(10) > 6) {
+            $("#game").append(`<img src="./images/trashG1.png" id="a2${id}">`);
+            $(`#a2${id}`).css({
+              left: rand(80) + "%",
+              top: rand(10) + "%",
+            });
+
+            movezombie2(id);
+            id++;
+          }
+        }
+
+        {
+          // 飲料
+          if (rand(10) > 8.5) {
+            $("#game").append(`<img src="./images/trashB.png" id="a2${id}">`);
+            $(`#a2${id}`).css({
+              left: rand(50) + "%",
+              top: rand(10) + "%",
+            });
+
+            movezombie2(id);
+            id++;
+          }
+        }
+
+        {
+          // 菸
+          if (rand(10) > 7) {
+            $("#game").append(`<img src="./images/trashS.png" id="a2${id}">`);
+            $(`#a2${id}`).css({
+              left: rand(50) + "%",
+              top: rand(50) + "%",
+            });
+
+            movezombie2(id);
+            id++;
+          }
+        }
+      }, 1000);
+    });
+
+    // 章魚
+    $("#game").on("click", "img", function () {
+      if ($(this).attr("src") === "./images/章魚-慢版-1.gif") {
+        $(this).attr("src", "./images/RIP.png");
+
+        $(this).stop(true, false);
+        $(this).css("pointer-events", "none");
+        $(this).fadeOut(2000);
+        score -= 5;
+        $("#text-score").text(score);
+      }
+      // 塑膠袋
+      else if ($(this).attr("src") === "./images/trashG1.png") {
+        $(this).attr("src", "./images/blood.png");
+
+        $(this).stop(true, false);
+        $(this).css("pointer-events", "none");
+        $(this).remove();
+        score += 1;
+        $("#text-score").text(score);
+      }
+      // 飲料
+      else if ($(this).attr("src") === "./images/trashB.png") {
+        $(this).attr("src", "./images/blood.png");
+        $(this).stop(true, false);
+        $(this).css("pointer-events", "none");
+        $(this).remove();
+        score += 3;
+        $("#text-score").text(score);
+      }
+      // 菸
+      else if ($(this).attr("src") === "./images/trashS.png") {
+        $(this).attr("src", "./images/blood.png");
+        $(this).stop(true, false);
+        $(this).css("pointer-events", "none");
+        $(this).remove();
+        score += 10;
+        $("#text-score").text(score);
+      }
+      // 烏龜
+      else if ($(this).attr("src") === "./images/烏龜-1.gif") {
+        $(this).attr("src", "./images/RIP.png");
+        $(this).stop(true, false);
+        $(this).css("pointer-events", "none");
+        $(this).fadeOut(2000);
+        score -= 10;
+        $("#text-score").text(score);
+      }
+    });
+
+    $("btn").html("onclick", "img", function () {
+      $(this).css("#000000", "width:100px", "hright:100px");
+      $(this).show;
+    });
+
+    // $('#role').style
+    let div = document.getElementById("role");
+    div.style.width = "184px";
+    div.style.height = "280px";
+    div.style.background = "url(./images/人游泳-2.gif) no-repeat";
+    div.style.position = "absolute";
+    div.style.top = "0";
+    div.style.left = "0";
+    setInterval(function () {
+      // console.log(div.offsetLeft, div.offsetTop);
+    }, 1000);
+    document.onkeydown = function (e) {
+      /* 方塊移動的速度，即每按一次方塊移動的畫素，值越大移動速度越快 */
+      let speed = 10;
+
+      switch (e.which) {
+        // 上
+        case 38:
+          if (div.offsetLeft > 10) {
+            div.style.top = parseInt(div.style.top) - speed + "px";
+          } else {
+            div.style.left = -20;
+          }
+
+          break;
+        // 下
+        case 40:
+          div.offsetTop > 410 ? (div.style.top = 400) : (div.style.top = parseInt(div.style.top) + speed + "px");
+          break;
+        // 左
+        case 37:
+          if (div.offsetLeft > 0) {
+            div.style.left = parseInt(div.style.left) - speed + "px";
+          } else {
+            div.style.left = 0;
+          }
+          break;
+        // 右
+        case 39:
+          if (div.offsetLeft < 750) {
+            div.style.left = parseInt(div.style.left) + speed + "px";
+          } else {
+            div.style.left = 750;
+          }
+          break;
+      }
+    };
+
+      //  // 血條
+      //  if(boxesIntersect(explorer, blob)) {
+      //  // 碰撞後扣除血量
+      //     gameHP -= 20;
+      //     // 碰撞後往後退避免一直扣血
+      //     explorer.x -= 10;
+      //   };
+      //             let num = 0;
+      //             let max = 400;
+      //             let blob = gameSprite("章魚-慢版.gif", resource);
+      //             let human =gameSprite("人游泳.gif", resource);
+
+      //             let xieNode = document.getElementById("#lineblood");
+
+      //             if (localStorage.x) {
+      //               //从localStorage中取出上次血量
+      //               max = localStorage.x;
+      //               lineblood.style.width = max + "px";
+      //             }
+      //             $("#game").on = function () {
+      //               if (boxesIntersect(explorer, blob)) {
+      //                 var r = Math.random() * 5 + 5;
+      //                 max -= r;
+      //               }
+      //               localStorage.setItem("x", max); //将血量存到localStorage中
+      //               console.log(localStorage);
+      //               xieNode.style.width = max + "px";
+
+      //               clearInterval(timer); //实现画面震动效果
+      //               timer = setInterval(function () {
+      //                 num++; //num控制画面震动时间，点击一下后，每隔30ms震动一次，震动10次
+      //                 if (num == 10) {
+      //                   clearInterval(timer);
+      //                   num = 0;
+      //                   document.body.style.left = 0;
+      //                   document.body.style.top = 0;
+      //                   return;
+      //                 }
+      //                 document.body.style.left = Math.random() * -20 + 10 + "px";
+      //                 document.body.style.top = Math.random() * -20 + 10 + "px";
+      //               }, 30);
+      //             };
+
+      // function gameLoop() {
+      //   if(gameHP === 0) {
+      //     gameStart.visible = false;
+      //   }
+
+      //   contain(explorer, {x: 28, y: 10, width: 488, height: 480})
+      //   contain(blob, {x: 28, y: 10, width: 488, height: 480})
+
+      //   if(boxesIntersect(explorer, blob)) {
+      //     // 碰撞後扣除血量
+      //     gameHP -= 20;
+      //     // 碰撞後往後退避免一直扣血
+      //     explorer.x -= 10;
+      //   }
+      //   // 重新調整血量
+      //   hpContainer.hpStatus.width = gameHP;
+      // }
+      // //
+  </script>
+</body>
+
+</html>
